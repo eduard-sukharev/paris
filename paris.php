@@ -736,4 +736,55 @@
         }
     }
 
+    trait CamelCaseFields
+    {
+        public function __isset($property)
+        {
+            return parent::__isset($this->toSnakeCase($property));
+        }
+
+        public function __set($property, $value)
+        {
+            parent::__set($this->toSnakeCase($property), $value);
+        }
+
+        public function __get($property)
+        {
+            return parent::__get($this->toSnakeCase($property));
+        }
+
+        public function __unset($property) {
+            parent::__unset($this->toSnakeCase($property));
+        }
+
+        public function get($property) {
+            return parent::get($this->toSnakeCase($property));
+        }
+
+        public function set($property, $value = null) {
+            parent::set($this->toSnakeCase($property), $value);
+            return $this;
+        }
+
+        public function set_expr($property, $value = null) {
+            parent::set_expr($this->toSnakeCase($property), $value);
+            return $this;
+        }
+
+        public function is_dirty($property) {
+            return parent::is_dirty($this->toSnakeCase($property));
+        }
+
+        public function as_array() {
+            if (func_num_args() === 0) {
+                return parent::as_array();
+            }
+            return parent::as_array(array_map([$this, 'toSnakeCase'], func_get_args()) ?: null);
+        }
+
+        public function hydrate($data=array()) {
+            parent::hydrate(array_combine(array_map([$this, 'toSnakeCase'], array_keys($data)), array_values($data)));
+        }
+    }
+
     class ParisMethodMissingException extends Exception {}
