@@ -718,12 +718,21 @@
          * @return bool|ORMWrapper
          */
         public function __call($name, $arguments) {
-            $method = strtolower(preg_replace('/([a-z])([A-Z])/', '$1_$2', $name));
+            $method = $this->toSnakeCase($name);
             if (method_exists($this, $method)) {
                 return call_user_func_array(array($this, $method), $arguments);
             }
 
             throw new ParisMethodMissingException("Method $name() does not exist in class " . get_class($this));
+        }
+
+        /**
+         * @param $string
+         * @return string
+         */
+        protected function toSnakeCase($string)
+        {
+            return strtolower(preg_replace('/([a-z])([A-Z])/', '${1}_${2}', $string));
         }
     }
 
