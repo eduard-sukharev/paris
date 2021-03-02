@@ -1,9 +1,13 @@
 Paris
 =====
 
-[![Build Status](https://travis-ci.org/j4mie/paris.png?branch=master)](https://travis-ci.org/j4mie/paris) [![Latest Stable Version](https://poser.pugx.org/j4mie/paris/v/stable.png)](https://packagist.org/packages/j4mie/paris) [![Total Downloads](https://poser.pugx.org/j4mie/paris/downloads.png)](https://packagist.org/packages/j4mie/paris)
-
 [http://j4mie.github.com/idiormandparis/](http://j4mie.github.com/idiormandparis/)
+
+### Addition to j4mie/paris package
+
+* Convenient `validate()` method for adding custom model validation
+* Actual models can do `User::factory()` instead of `Model::factory('User')`
+* Actual models can use `CamelCaseFields` trait to allow setting `camelCase` fields for `snake_case` columns
 
 ---
 ### Feature complete
@@ -59,7 +63,7 @@ class User extends Model {
 
 class Tweet extends Model {}
 
-$user = Model::factory('User')
+$user = User::factory()
     ->where_equal('username', 'j4mie')
     ->find_one();
 $user->first_name = 'Jamie';
@@ -73,6 +77,16 @@ foreach ($tweets as $tweet) {
 
 Changelog
 ---------
+
+### 1.6.1 - released 2021-03-02
+
+* Convenience `validate()` method for adding custom model validation
+* Models can do `User::factory()` instead of `Model::factory('User')`
+* Models can use `CamelCaseFields` trait to allow setting `camelCase` fields for `snake_case` columns
+
+### 1.6.0 - released 2021-02-28
+
+* Bumped idiorm version to ~1.6.0
 
 #### 1.5.6 - released 2017-03-21
 
