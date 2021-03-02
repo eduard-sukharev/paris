@@ -659,6 +659,10 @@
          * @return null
          */
         public function save() {
+            if (!$this->validate()) {
+                throw new OrmValidationException(sprintf("Model %s validation failed", get_called_class()));
+            }
+
             return $this->orm->save();
         }
 
@@ -748,6 +752,17 @@
         {
             return strtolower(preg_replace('/([a-z])([A-Z])/', '${1}_${2}', $string));
         }
+
+        /**
+         * This function is called from within save() method and must return true if validation passed.
+         * If return value is 'falsy' (0, false, null, [] or no return statement given) the validation considered to be
+         * failed and OrmValidationException is thrown.
+         * For more specific validation exception you may throw your own exception
+         * @return bool
+         */
+        protected function validate() {
+            return true;
+        }
     }
 
     trait CamelCaseFields
@@ -802,3 +817,5 @@
     }
 
     class ParisMethodMissingException extends Exception {}
+    class OrmValidationException extends Exception {}
+
