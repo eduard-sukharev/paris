@@ -665,7 +665,7 @@
         /**
          * @return static|\ORMWrapper
          */
-        public static function create($data = [])
+        public static function create($data = array())
         {
             $ormWrapper = self::factory(get_called_class())->create();
             $ormWrapper->hydrate($data);
@@ -793,11 +793,11 @@
             if (func_num_args() === 0) {
                 return parent::as_array();
             }
-            return parent::as_array(array_map([$this, 'toSnakeCase'], func_get_args()) ?: null);
+            return parent::as_array(array_map(array($this, 'toSnakeCase'), func_get_args()) ?: null);
         }
 
         public function hydrate($data=array()) {
-            parent::hydrate(array_combine(array_map([$this, 'toSnakeCase'], array_keys($data)), array_values($data)));
+            parent::hydrate(array_combine(array_map(array($this, 'toSnakeCase'), array_keys($data)), array_values($data)));
         }
     }
 
