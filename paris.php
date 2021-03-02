@@ -263,7 +263,7 @@
          *
          * @param  string $class_name
          *
-*@return string
+         * @return string
          */
         protected static function _get_table_name($class_name) {
             $specified_table_name = self::_get_static_property($class_name, '_table');
@@ -354,11 +354,14 @@
          * responsible for returning instances of the correct class when
          * its find_one or find_many methods are called.
          *
-         * @param  string      $class_name
+         * @param  null|string      $class_name
          * @param  null|string $connection_name
          * @return ORMWrapper
          */
-        public static function factory($class_name, $connection_name = null) {
+        public static function factory($class_name = null, $connection_name = null) {
+            if (!$class_name) {
+                $class_name = get_called_class();
+            }
             $class_name = self::$auto_prefix_models . $class_name;
             $table_name = self::_get_table_name($class_name);
 
@@ -657,6 +660,17 @@
          */
         public function save() {
             return $this->orm->save();
+        }
+
+        /**
+         * @return static|\ORMWrapper
+         */
+        public static function create($data = [])
+        {
+            $ormWrapper = self::factory(get_called_class())->create();
+            $ormWrapper->hydrate($data);
+
+            return $ormWrapper;
         }
 
         /**
